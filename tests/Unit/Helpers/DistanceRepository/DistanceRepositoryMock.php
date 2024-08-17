@@ -10,16 +10,17 @@ class DistanceRepositoryMock implements DistanceRepositoryInterface {
   public function save(Distance $distance): void
   {
     $this->callsGet++;
-    $this->storage[] = $distance;
+    $key = $distance->getOrigin()->toString() . $distance->getDestination()->toString();
+    $this->storage[$key] = $distance;
   }
 
   public function get(string $originCep, string $destinationCep): ?Distance
   {
     $this->callsSaved++;
-    foreach ($this->storage as $distance) {
-      if ($distance->getOrigin()->toString() === $originCep && $distance->getDestination()->toString() === $destinationCep) {
-        return $distance;
-      }
+    $key = $originCep . $destinationCep;
+    if (array_key_exists($key, $this->storage)) {
+      return $this->storage[$key];
     }
+    return null;
   }
 }
