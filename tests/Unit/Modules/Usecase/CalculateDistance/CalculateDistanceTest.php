@@ -64,3 +64,22 @@ it("should throw exception when origin or destination are invalid", function (st
   [CepFinderMock::JOACABA_CEP, "ghijkl"],
   ["ghijkl", CepFinderMock::BLUMENAU_CEP]
 ])->throws(CepIsInvalidExeception::class);
+
+it("should return distance already calculated when origin and destination are equal", function (string $cepOrigin,string $cepDestination) {
+  $sut = CalculateDistanceSut::make();
+  $usecase = new CalculateDistance(
+    $sut->cepFinder,
+    $sut->distanceRepository
+  );
+  $input = CalculateDistanceInput::make($cepOrigin, $cepDestination);
+  $usecase->execute($input);
+  $usecase->execute($input);
+  $usecase->execute($input);
+  $usecase->execute($input);
+  $usecase->execute($input);
+  
+  expect($sut->distanceRepository->getCallsSaved())->toBe(1);
+  expect($sut->distanceRepository->getCallsGet())->toBe(5);
+})->with([
+  [CepFinderMock::JOACABA_CEP, CepFinderMock::BLUMENAU_CEP],
+]);
