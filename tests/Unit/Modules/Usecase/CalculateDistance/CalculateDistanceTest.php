@@ -1,0 +1,73 @@
+<?php
+declare(strict_types=1);
+
+use Isma\Datafrete\Modules\DistanceCalculator\Exception\CepIsInvalidExeception;
+use Isma\Datafrete\Modules\DistanceCalculator\Exception\CepNotFoundException;
+use Isma\Datafrete\Modules\DistanceCalculator\Usecase\CalculateDistance\CalculateDistanceInput;
+use Isma\Datafrete\Modules\DistanceCalculator\Usecase\CalculateDistance\CalculateDistance;
+use Test\Datafrete\Unit\Helpers\CepFinder\CepFinderMock;
+use Test\Datafrete\Unit\Helpers\DistanceRepository\DistanceRepositorySpy;
+
+uses()->group("unit");
+
+it("should be able to calculate distance when origin and destination are equal", function (string $cepOrigin,string $cepDestination) {
+  $cepFinder = new CepFinderMock();
+  $distanceRepository = new DistanceRepositorySpy();
+  $usecase = new CalculateDistance(
+    $cepFinder,
+    $distanceRepository
+  );
+  $input = CalculateDistanceInput::make($cepOrigin, $cepDestination);
+  $output = $usecase->execute($input);
+
+  $distanceRepository->toBeCalledOnce();
+  expect($output->distance)->toBe(0.0);
+})->with([
+  ["01001000", "01001000"],
+]);
+
+it("should be able to calculate distance when origin and destination are different",
+  function (string $cepOrigin,string $cepDestination, float $distance) {
+    $cepFinder = new CepFinderMock();
+    $distanceRepository = new DistanceRepositorySpy();
+    $usecase = new CalculateDistance(
+      $cepFinder,
+      $distanceRepository
+    );
+    $input = CalculateDistanceInput::make($cepOrigin, $cepDestination);
+    $output = $usecase->execute($input);
+
+    $distanceRepository->toBeCalledOnce();
+    expect($output->distance)->toBe($distance);
+  }
+)->with([
+    [CepFinderMock::JOACABA_CEP, CepFinderMock::BLUMENAU_CEP, 243.57],
+]);
+
+it("should throw exception when origin or destination not found", function (string $cepOrigin,string $cepDestination) {
+  $cepFinder = new CepFinderMock();
+  $distanceRepository = new DistanceRepositorySpy();
+  $usecase = new CalculateDistance(
+    $cepFinder,
+    $distanceRepository
+  );
+  $input = CalculateDistanceInput::make($cepOrigin, $cepDestination);
+  $usecase->execute($input);
+})->with([
+  ["01001002", "01001003"],
+])->throws(CepNotFoundException::class);
+
+it("should throw exception when origin or destination are invalid", function (string $cepOrigin,string $cepDestination) {
+  $cepFinder = new CepFinderMock();
+  $distanceRepository = new DistanceRepositorySpy();
+  $usecase = new CalculateDistance(
+    $cepFinder,
+    $distanceRepository
+  );
+  $input = CalculateDistanceInput::make($cepOrigin, $cepDestination);
+  $usecase->execute($input);
+})->with([
+  ["abcdef", "ghijkl"],
+  [CepFinderMock::JOACABA_CEP, "ghijkl"],
+  ["ghijkl", CepFinderMock::BLUMENAU_CEP]
+])->throws(CepIsInvalidExeception::class);
