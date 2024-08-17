@@ -9,18 +9,28 @@ class DistanceRepositoryMock implements DistanceRepositoryInterface {
   private array $storage = [];
   public function save(Distance $distance): void
   {
-    $this->callsGet++;
+    $this->callsSaved++;
     $key = $distance->getOrigin()->toString() . $distance->getDestination()->toString();
     $this->storage[$key] = $distance;
   }
 
   public function get(string $originCep, string $destinationCep): ?Distance
   {
-    $this->callsSaved++;
-    $key = $originCep . $destinationCep;
+    $this->callsGet++;
+    $key = "{$originCep}{$destinationCep}";
     if (array_key_exists($key, $this->storage)) {
       return $this->storage[$key];
     }
     return null;
+  }
+
+  public function getCallsSaved(): int
+  {
+    return $this->callsSaved;
+  }
+
+  public function getCallsGet(): int
+  {
+    return $this->callsGet;
   }
 }
