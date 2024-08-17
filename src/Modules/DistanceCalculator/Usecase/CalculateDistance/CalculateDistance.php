@@ -16,6 +16,14 @@ class CalculateDistance
   }
 
   public function execute(CalculateDistanceInput $input): CalculateDistanceOutput {
+    $distance = $this->alreadyCalculated($input);
+    if (!is_null($distance)) {
+      return CalculateDistanceOutput::make(
+        $distance->getOrigin()->toString(),
+        $distance->getDestination()->toString(),
+        $distance->getDistance()
+      );
+    }
     $origin = $this->cepFinder->find($input->originCep);
     $destination = $this->cepFinder->find($input->destinationCep);
     $distance = new Distance(
@@ -30,5 +38,9 @@ class CalculateDistance
       $input->destinationCep,
       $distance->getDistance()
     );
+  }
+
+  private function alreadyCalculated(CalculateDistanceInput $input): ?Distance {
+    return $this->distanceRepository->get($input->originCep, $input->destinationCep);
   }
 }

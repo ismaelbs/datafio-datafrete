@@ -32,6 +32,14 @@ class Distance {
     return $this->distance;
   }
 
+  public function getOrigin(): Cep {
+    return $this->origin;
+  }
+
+  public function getDestination(): Cep {
+    return $this->destination;
+  }
+
   public function calculateDistanceInKilometers(): void {
     $earthMeanRadius = 6371;
     $deltaLatitude = deg2rad(

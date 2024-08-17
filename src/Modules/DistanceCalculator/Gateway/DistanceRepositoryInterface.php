@@ -5,4 +5,5 @@ use Isma\Datafrete\Modules\DistanceCalculator\Domain\Entity\Distance;
 
 interface DistanceRepositoryInterface {
   public function save(Distance $distance): void;
+  public function get(string $originCep, string $destinationCep): ?Distance;
 }
