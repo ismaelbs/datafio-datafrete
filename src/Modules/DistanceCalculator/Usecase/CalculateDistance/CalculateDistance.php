@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace Isma\Datafrete\Modules\DistanceCalculator\Usecase\CalculateDistance;
 use Isma\Datafrete\Modules\DistanceCalculator\Domain\Entity\Distance;
+use Isma\Datafrete\Modules\DistanceCalculator\Domain\ValueObject\Cep;
+use Isma\Datafrete\Modules\DistanceCalculator\Exception\CepException;
 use Isma\Datafrete\Modules\DistanceCalculator\Gateway\CepFinderInterface;
 use Isma\Datafrete\Modules\DistanceCalculator\Gateway\DistanceRepositoryInterface;
 
@@ -16,6 +18,14 @@ class CalculateDistance
   }
 
   public function execute(CalculateDistanceInput $input): CalculateDistanceOutput {
+    if (!Cep::validade($input->originCep)) {
+      throw CepException::invalidCep($input->originCep);
+    }
+
+    if (!Cep::validade($input->destinationCep)) {
+      throw CepException::invalidCep($input->destinationCep);
+    }
+
     $distance = $this->alreadyCalculated($input);
     if (!is_null($distance)) {
       return CalculateDistanceOutput::make(
