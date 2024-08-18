@@ -1,0 +1,21 @@
+#!/usr/bin/env php
+<?php
+use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\Tools\Console\ConsoleRunner;
+use Doctrine\ORM\Tools\Console\EntityManagerProvider\SingleManagerProvider;
+use Dotenv\Dotenv;
+use Isma\Datafrete\Infra\DI\Container;
+
+require __DIR__ . '/../vendor/autoload.php';
+require __DIR__ . '/../src/Config/constants.php';
+
+(Dotenv::createImmutable(dirname(__DIR__)))->load();
+
+$container = (new Container(require CONTAINER_BINDINGS))->getContainer();
+/**
+ * @var EntityManagerInterface $entityManager
+ */
+$entityManager = $container->get(EntityManagerInterface::class);
+ConsoleRunner::run(
+    new SingleManagerProvider($entityManager)
+);
