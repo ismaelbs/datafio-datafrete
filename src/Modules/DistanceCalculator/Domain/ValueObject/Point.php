@@ -20,6 +20,14 @@ class Point
     return $this->longitude;
   }
 
+  public function setLatitude(float $latitude): void {
+    $this->latitude = $latitude;
+  }
+
+  public function setLongitude(float $longitude): void {
+    $this->longitude = $longitude;
+  }
+
   public static function create(float $latitude, float $longitude): Point
   {
     return new self(
