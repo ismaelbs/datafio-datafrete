@@ -24,7 +24,7 @@ class Cep
     if (!method_exists($this->point, $method)) {
       throw new BadMethodCallException();
     }
-    return $this->point->$method(...$args);
+    return call_user_func_array([$this->point, $method], $args);
   }
 
   public static function parse(string $value, float $latitude, float $longitude): Cep

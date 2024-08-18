@@ -40,6 +40,31 @@ class Distance {
     return $this->destination;
   }
 
+  public function getCreatedAt(): DateTimeImmutable
+  {
+    return $this->createdAt;
+  }
+
+  public function getUpdatedAt(): DateTimeImmutable
+  {
+    return $this->updatedAt;
+  }
+
+  public function setUpdatedAt(DateTimeImmutable $updatedAt): void
+  {
+    $this->updatedAt = $updatedAt;
+  }
+
+  public function setCreatedAt(DateTimeImmutable $createdAt): void
+  {
+    $this->createdAt = $createdAt;
+  }
+
+  public function setDistance(float $distance): void
+  {
+    $this->distance = $distance;
+  }
+
   public function calculateDistanceInKilometers(): void {
     $earthMeanRadius = 6371;
     $deltaLatitude = deg2rad(

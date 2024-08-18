@@ -21,4 +21,9 @@ class DistanceId
       Uuid::uuid4()->toString()
     );
   }
+
+  public static function fromString(string $value): DistanceId
+  {
+    return new self($value);
+  }
 }
