@@ -17,4 +17,14 @@ return [
     "user" => $_ENV["DB_USER"],
     "password" => $_ENV["DB_PASS"],
   ],
+  "cache" => [
+    "host" => $_ENV["CACHE_HOST"],
+    "port" => (int) $_ENV["CACHE_PORT"],
+    "password" => $_ENV["CACHE_PASS"],
+  ],
+  "apis" => [
+    "brasilapi" => [
+      "url" => $_ENV["BRASILAPI_URL"],
+    ],
+  ],
 ];

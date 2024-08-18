@@ -10,14 +10,14 @@ use Isma\Datafrete\Infra\Database\Doctrine\CalculateDistance\Entities\Distance a
 
 class DistanceRepository extends EntityRepository implements DistanceRepositoryInterface {
 
-
   public function get(string $origin, string $destination): ?Distance
   {
-    /**
-     * @var \Isma\Datafrete\Infra\Database\Doctrine\CalculateDistance\Entities\Distance|null $distance
-     */
-    $distance = $this->findOneBy(['origin' => $origin, 'destination' => $destination]);
-    if (!$distance) {
+    /** @var \Isma\Datafrete\Infra\Database\Doctrine\CalculateDistance\Entities\Distance|null $distance */
+    $distance = $this->findOneBy([
+      'origin' => $origin,
+      'destination' => $destination
+    ]);
+    if (is_null($distance)) {
       return null;
     }
     $distanceObj = new Distance(

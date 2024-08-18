@@ -29,6 +29,8 @@
         "doctrine/orm": "^3.2",
         "doctrine/dbal": "^4.1",
         "symfony/cache": "^7.1",
-        "robmorgan/phinx": "^0.16.2"
+        "robmorgan/phinx": "^0.16.2",
+        "psr/simple-cache": "^3.0",
+        "guzzlehttp/guzzle": "^7.0"
     }
 }
