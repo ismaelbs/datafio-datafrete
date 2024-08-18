@@ -40,10 +40,6 @@ class Cep
     if (strlen($value) !== 8) {
       return false;
     }
-    $value = substr($value, 0, 5) . "-" . substr($value, 5);
-    if (!preg_match('/^[0-9]{5}-[0-9]{3}$/', $value)) {
-      return false;
-    }
     return true;
   }
 }
