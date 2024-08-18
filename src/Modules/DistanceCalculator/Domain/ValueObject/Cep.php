@@ -2,6 +2,7 @@
 declare(strict_types=1);
 
 namespace Isma\Datafrete\Modules\DistanceCalculator\Domain\ValueObject;
+use BadMethodCallException;
 use Isma\Datafrete\Modules\DistanceCalculator\Exception\CepException;
 
 /**
@@ -20,6 +21,9 @@ class Cep
   }
 
   public function __call($method, $args) {
+    if (!method_exists($this->point, $method)) {
+      throw new BadMethodCallException();
+    }
     return $this->point->$method(...$args);
   }
 
