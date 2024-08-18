@@ -1,0 +1,39 @@
+services:
+  app:
+    build:
+      context: "."
+      dockerfile: Dockerfile
+      args:
+        USER_ID: '${WWWUSER:-1000}'
+        GROUP_ID: '${WWWGROUP:-1000}'
+        USER: '${USER:-whoami}'
+    container_name: app
+    restart: always
+    working_dir: /var/www/
+    volumes:
+      - ../:/var/www
+      - ./php/local.ini:/usr/local/etc/php/conf.d/local.ini
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+  nginx:
+    image: nginx:1.19-alpine
+    container_name: nginx
+    restart: always
+    ports:
+      - "8000:80"
+    volumes:
+      - ../:/var/www
+      - ./nginx:/etc/nginx/conf.d
+  db:
+    image: postgres:latest
+    restart: always
+    container_name: postgres
+    volumes:
+       - ./storage:/var/lib/postgresql/data
+    environment:
+      - PGDATA=/var/lib/postgresql/data
+      - POSTGRES_PASSWORD=root
+      - POSTGRES_USER=root
+      - POSTGRES_DB=datafrete
+    ports:
+      - 5432:5432
