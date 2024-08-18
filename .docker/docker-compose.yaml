@@ -37,3 +37,10 @@ services:
       - POSTGRES_DB=datafrete
     ports:
       - 5432:5432
+  redis:
+    image: redis:latest
+    restart: always
+    container_name: redis
+    ports:
+      - 6379:6379
+    command: redis-server --requirepass root

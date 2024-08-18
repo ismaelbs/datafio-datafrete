@@ -22,6 +22,9 @@ RUN docker-php-ext-install pdo pdo_pgsql
 RUN pecl install xdebug \
   && docker-php-ext-enable xdebug
 
+RUN pecl install redis \
+  && docker-php-ext-enable redis
+
 COPY ./php/xdebug.ini "${PHP_INI_DIR}/conf.d"
 
 RUN groupadd --force -g $GROUP_ID $USER
