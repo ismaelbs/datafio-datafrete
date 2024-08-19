@@ -1,5 +1,6 @@
 <?php
 namespace Isma\Datafrete\Infra\Http\Controller;
+use Isma\Datafrete\Modules\DistanceCalculator\Exception\CepIsInvalidExeception;
 use Isma\Datafrete\Modules\DistanceCalculator\Usecase\CalculateDistance\CalculateDistance;
 use Isma\Datafrete\Modules\DistanceCalculator\Usecase\CalculateDistance\CalculateDistanceInput;
 use Psr\Http\Message\ResponseInterface as Response;
@@ -20,9 +21,14 @@ class DistanceController
       $distanceOutput = $this->calculateDistance->execute(
           CalculateDistanceInput::make($origin, $destination)
       );
-    } catch (\Exception $e) {
+    } catch (CepIsInvalidExeception $e) {
       $response->getBody()->write(json_encode([
         "error" => $e->getMessage()
+      ]));
+      return $response->withStatus(400);
+    } catch (\Exception $e) {
+      $response->getBody()->write(json_encode([
+        "error" => "An error has occurred"
       ], JSON_PRETTY_PRINT));
       return $response->withStatus(400);
     }
