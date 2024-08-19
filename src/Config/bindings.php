@@ -2,9 +2,11 @@
 declare(strict_types=1);
 use Doctrine\ORM\EntityManagerInterface;
 use Isma\Datafrete\Config\Config;
+use Isma\Datafrete\Infra\Cache\CalculateDistance\CepDistance;
 use Isma\Datafrete\Infra\CepFinder\BrasilApi;
 use Isma\Datafrete\Infra\Database\Doctrine\CalculateDistance\Entities\Distance;
 use Isma\Datafrete\Infra\Database\Doctrine\PostgresEntityManager;
+use Isma\Datafrete\Modules\DistanceCalculator\Gateway\CepCacheInterface;
 use Isma\Datafrete\Modules\DistanceCalculator\Gateway\CepFinderInterface;
 use Isma\Datafrete\Modules\DistanceCalculator\Gateway\DistanceRepositoryInterface;
 use Psr\Container\ContainerInterface;
@@ -25,5 +27,6 @@ return [
     return new RedisAdapter(
       RedisAdapter::createConnection("redis://:root@redis:6379"),
     );
-  }
+  },
+  CepCacheInterface::class => fn(RedisAdapter $cache) => new CepDistance($cache)
 ];
