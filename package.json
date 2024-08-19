@@ -1,0 +1,17 @@
+{
+  "name": "isma_datafrete",
+  "version": "1.0.0",
+  "scripts": {
+    "dev": "encore dev",
+    "build": "encore production --progress"
+  },
+  "devDependencies": {
+    "@popperjs/core": "^2.11.8",
+    "@symfony/webpack-encore": "^4.6.1",
+    "bootstrap": "^5.3.3",
+    "bootstrap-icons": "^1.11.3",
+    "sass": "^1.77.8",
+    "sass-loader": "^14.2.1",
+    "webpack-notifier": "^1.15.0"
+  }
+}
