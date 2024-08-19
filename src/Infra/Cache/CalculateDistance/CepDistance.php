@@ -19,8 +19,7 @@ class CepDistance implements CepCacheInterface
     if (!$value->isHit()) {
       return null;
     }
-    var_dump($value->get());
-    return null;
+    return $value->get();
   }
 
   public function save(Cep $cep): void
