@@ -8,7 +8,8 @@ readonly class CalculateDistanceOutput{
   public function __construct(
     public string $originCep,
     public string $destinationCep,
-    public float $distance
+    public float $distance,
+    public string $type = 'Kilometers'
   ) {
   }
 
