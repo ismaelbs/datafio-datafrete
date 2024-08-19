@@ -20,6 +20,20 @@ class DistanceController
   public function post(Request $request, Response $response): Response {
     $response = $response->withHeader('Content-Type', 'application/json');
     $body = (array) $request->getParsedBody();
+    if (!isset($body["ceps"])) {
+      $response->getBody()->write(json_encode([
+        "error" => "Ceps are required"
+      ]));
+      return $response->withStatus(400);
+    }
+
+    if (!isset($body["ceps"]["origin"]) || !isset($body["ceps"]["destination"])) {
+      $response->getBody()->write(json_encode([
+        "error" => "Ceps are required"
+      ]));
+      return $response->withStatus(400);
+    }
+
     ["origin" => $origin, "destination" => $destination] = $body["ceps"];
     try {
       $distanceOutput = $this->calculateDistance->execute(
