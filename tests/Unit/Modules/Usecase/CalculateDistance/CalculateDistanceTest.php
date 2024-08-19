@@ -15,7 +15,8 @@ it("should be able to calculate distance when origin and destination are equal",
   $sut = CalculateDistanceSut::make();
   $usecase = new CalculateDistance(
     $sut->cepFinder,
-    $sut->distanceRepository
+    $sut->distanceRepository,
+    $sut->cepDistanceCache
   );
   $input = CalculateDistanceInput::make($cepOrigin, $cepDestination);
   $output = $usecase->execute($input);
@@ -29,7 +30,8 @@ it("should be able to calculate distance when origin and destination are differe
     $sut = CalculateDistanceSut::make();
     $usecase = new CalculateDistance(
       $sut->cepFinder,
-      $sut->distanceRepository
+      $sut->distanceRepository,
+      $sut->cepDistanceCache
     );
     $input = CalculateDistanceInput::make($cepOrigin, $cepDestination);
     $output = $usecase->execute($input);
@@ -43,7 +45,8 @@ it("should throw exception when origin or destination not found", function (stri
   $sut = CalculateDistanceSut::make();
   $usecase = new CalculateDistance(
     $sut->cepFinder,
-    $sut->distanceRepository
+    $sut->distanceRepository,
+    $sut->cepDistanceCache
   );
   $input = CalculateDistanceInput::make($cepOrigin, $cepDestination);
   $usecase->execute($input);
@@ -55,7 +58,8 @@ it("should throw exception when origin or destination are invalid", function (st
   $sut = CalculateDistanceSut::make();
   $usecase = new CalculateDistance(
     $sut->cepFinder,
-    $sut->distanceRepository
+    $sut->distanceRepository,
+    $sut->cepDistanceCache
   );
   $input = CalculateDistanceInput::make($cepOrigin, $cepDestination);
   $usecase->execute($input);
@@ -69,7 +73,8 @@ it("should return distance already calculated when origin and destination are eq
   $sut = CalculateDistanceSut::make();
   $usecase = new CalculateDistance(
     $sut->cepFinder,
-    $sut->distanceRepository
+    $sut->distanceRepository,
+    $sut->cepDistanceCache
   );
   $input = CalculateDistanceInput::make($cepOrigin, $cepDestination);
   $usecase->execute($input);
