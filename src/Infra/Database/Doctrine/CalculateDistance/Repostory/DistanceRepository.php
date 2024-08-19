@@ -9,7 +9,6 @@ use Isma\Datafrete\Modules\DistanceCalculator\Gateway\DistanceRepositoryInterfac
 use Isma\Datafrete\Infra\Database\Doctrine\CalculateDistance\Entities\Distance as DoctrineDistance;
 
 class DistanceRepository extends EntityRepository implements DistanceRepositoryInterface {
-
   public function get(string $origin, string $destination): ?Distance
   {
     /** @var DoctrineDistance|null $distance */
@@ -48,8 +47,8 @@ class DistanceRepository extends EntityRepository implements DistanceRepositoryI
     $query = $this->createQueryBuilder('d')
       ->orderBy('d.createdAt', 'DESC')
       ->setMaxResults($limit)
-      ->setFirstResult($offset);
-    $query = $query->getQuery();
+      ->setFirstResult($offset)
+      ->getQuery();
     /** @var DoctrineDistance[] $distances */
     $distances = $query->getResult();
     return array_map(function (DoctrineDistance $distance) {
