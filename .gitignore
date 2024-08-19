@@ -1,3 +1,7 @@
 /vendor/
 .env
 /.docker/storage
+/.vscode
+storage/
+node_modules
+public/build
