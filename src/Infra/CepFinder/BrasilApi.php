@@ -7,7 +7,6 @@ use Isma\Datafrete\Config\Config;
 use Isma\Datafrete\Modules\DistanceCalculator\Exception\CepException;
 use Isma\Datafrete\Modules\DistanceCalculator\Gateway\CepFinderInterface;
 use Isma\Datafrete\Modules\DistanceCalculator\Domain\ValueObject\Cep;
-use Psr\Container\ContainerInterface;
 
 class BrasilApi implements CepFinderInterface
 {
@@ -23,6 +22,13 @@ class BrasilApi implements CepFinderInterface
       throw CepException::notFound($cep);
     }
     $response = json_decode($response->getBody()->getContents(), true);
+    if (empty($response)) {
+      throw CepException::notFound($cep);
+    }
+
+    if (!isset($response['location']['coordinates']['latitude']) || !isset($response['location']['coordinates']['longitude'])) {
+      throw CepException::coordenatesNotFound($cep);
+    }
     $lat = floatval($response['location']['coordinates']['latitude']);
     $lng = floatval($response['location']['coordinates']['longitude']);
     return Cep::parse($response['cep'], $lat, $lng);

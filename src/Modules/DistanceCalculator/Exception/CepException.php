@@ -20,4 +20,8 @@ class CepException extends \Exception
   {
     return CepIsInvalidExeception::make($cep);
   }
+
+  public static function coordenatesNotFound(string $cep): \Exception {
+    return CepCoordenatesNotFoundException::make($cep);
+  } 
 }
