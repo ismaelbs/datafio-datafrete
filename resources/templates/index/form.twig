@@ -1,11 +1,39 @@
-<form method="post">
-  <div class="form-group">
-    <label for="origin">Cep de origem</label>
-    <input type="text" class="form-control" id="origin" name="ceps[origin]" placeholder="00000000" required>
+<form method="post" class="mt-3 mb-3 mw-50 mx-auto bg-white p-3 rounded shadow text-secondary d-flex flex-column gap-2">
+  <div class="row">
+    <div class="form-group col">
+      <label for="origin">CEP de origem</label>
+      <input type="text" class="form-control" id="origin" name="ceps[origin]" placeholder="00000000" required pattern="[0-9]{8}">
+    </div>
+    <div class="form-group col">
+      <label for="destination">CEP de destino</label>
+      <input type="text" class="form-control" id="destination" name="ceps[destination]" placeholder="00000000" required pattern="[0-9]{8}">
+    </div>
   </div>
   <div class="form-group">
-    <label for="destination">Cep de destino</label>
-    <input type="text" class="form-control" id="destination" name="ceps[destination]" placeholder="00000000" required>
+    <button type="submit" class="btn btn-primary">
+      <i class="bi bi-calculator"></i>
+      Calcular
+    </button>
+    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#importar-ceps-modal">
+      <i class="bi bi-file-arrow-up"></i>Importar CEPs</button>
   </div>
-  <button type="submit" class="btn btn-primary">Calcular</button>
 </form>
+
+<div class="modal fade text-secondary" id="importar-ceps-modal" tabindex="-1" aria-labelledby="importar-ceps-modal" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <form method="post" enctype="multipart/form-data">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="exampleModalLabel">Selecione o arquivo</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <input type="file" name="file" id="file" class="form-control" required accept=".csv">
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary">Importar</button>
+        </div>
+    </form>
+    </div>
+  </div>
+</div>

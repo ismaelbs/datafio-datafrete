@@ -1,0 +1,18 @@
+@import "~bootstrap/scss/bootstrap";
+@import "~bootstrap-icons/font/bootstrap-icons";
+
+body {
+  font-family: "Inter", sans-serif;
+  background-color: #2072c4;
+  color: #fff;
+}
+
+.btn-calculate {
+  background-color: #fff;
+  color: #2072c4;
+  border: none;
+  &:hover {
+    background-color: #2072c4;
+    color: #fff;
+  }
+}
