@@ -32,9 +32,9 @@ return [
     );
   },
   CepCacheInterface::class => fn(RedisAdapter $cache) => new CepDistance($cache),
-  Twig::class => function() {
+  Twig::class => function(Config $config) {
     $twig = Twig::create(TEMPLATES_PATH, [
-      'cache' => false
+      'auto_reload' => $config->get('app.env'),
     ]);
     return $twig;
   }
