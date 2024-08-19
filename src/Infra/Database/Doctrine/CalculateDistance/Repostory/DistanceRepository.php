@@ -45,7 +45,7 @@ class DistanceRepository extends EntityRepository implements DistanceRepositoryI
     $limit = $config['limit'] ?? 10;
     $offset = $config['offset'] ?? 0;
     $query = $this->createQueryBuilder('d')
-      ->orderBy('d.createdAt', 'DESC')
+      ->orderBy('d.createdAt', 'ASC')
       ->setMaxResults($limit)
       ->setFirstResult($offset)
       ->getQuery();
