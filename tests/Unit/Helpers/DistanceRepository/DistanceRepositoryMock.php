@@ -24,6 +24,10 @@ class DistanceRepositoryMock implements DistanceRepositoryInterface {
     return null;
   }
 
+  public function list(array $config = []): array {
+    return $this->storage;
+  }
+
   public function getCallsSaved(): int
   {
     return $this->callsSaved;

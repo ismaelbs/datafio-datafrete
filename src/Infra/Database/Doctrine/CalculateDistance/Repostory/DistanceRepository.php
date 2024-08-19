@@ -12,7 +12,7 @@ class DistanceRepository extends EntityRepository implements DistanceRepositoryI
 
   public function get(string $origin, string $destination): ?Distance
   {
-    /** @var \Isma\Datafrete\Infra\Database\Doctrine\CalculateDistance\Entities\Distance|null $distance */
+    /** @var DoctrineDistance|null $distance */
     $distance = $this->findOneBy([
       'origin' => $origin,
       'destination' => $destination
@@ -20,19 +20,7 @@ class DistanceRepository extends EntityRepository implements DistanceRepositoryI
     if (is_null($distance)) {
       return null;
     }
-    $distanceObj = new Distance(
-      DistanceId::fromString($distance->getId()),
-      Cep::parse($distance->getOrigin(), (float) $distance->getOriginLatitude(), (float) $distance->getOriginLongitude()),
-      Cep::parse($distance->getOrigin(), (float) $distance->getDestinationLatitude(), (float) $distance->getDestinationLongitude()),
-    );
-
-    $distanceObj->setCreatedAt($distance->getCreatedAt());
-    $distanceObj->setUpdatedAt($distance->getUpdatedAt());
-    $distanceObj->setDistance((float) $distance->getDistance());
-    $distanceObj->getOrigin()->setLatitude((float) $distance->getOriginLatitude());
-    $distanceObj->getOrigin()->setLongitude((float) $distance->getOriginLongitude());
-    $distanceObj->getDestination()->setLatitude((float) $distance->getDestinationLatitude());
-    $distanceObj->getDestination()->setLongitude((float) $distance->getDestinationLongitude());
+    $distanceObj = $this->mapping($distance);
     return $distanceObj;
   }
 
@@ -51,5 +39,38 @@ class DistanceRepository extends EntityRepository implements DistanceRepositoryI
     $doctrineDistance->setOriginLongitude((string)$distance->getOrigin()->getLongitude());
     $this->getEntityManager()->persist($doctrineDistance);
     $this->getEntityManager()->flush();
+  }
+
+  public function list(array $config = []): array
+  {
+    $limit = $config['limit'] ?? 10;
+    $offset = $config['offset'] ?? 0;
+    $query = $this->createQueryBuilder('d')
+      ->orderBy('d.createdAt', 'DESC')
+      ->setMaxResults($limit)
+      ->setFirstResult($offset);
+    $query = $query->getQuery();
+    /** @var DoctrineDistance[] $distances */
+    $distances = $query->getResult();
+    return array_map(function (DoctrineDistance $distance) {
+      return $this->mapping($distance);
+    }, $distances);
+  }
+
+  private function mapping(DoctrineDistance $doctrineDistance): Distance {
+    $distanceObj = new Distance(
+      DistanceId::fromString($doctrineDistance->getId()),
+      Cep::parse($doctrineDistance->getOrigin(), (float) $doctrineDistance->getOriginLatitude(), (float) $doctrineDistance->getOriginLongitude()),
+      Cep::parse($doctrineDistance->getDestination(), (float) $doctrineDistance->getDestinationLatitude(), (float) $doctrineDistance->getDestinationLongitude()),
+    );
+
+    $distanceObj->setCreatedAt($doctrineDistance->getCreatedAt());
+    $distanceObj->setUpdatedAt($doctrineDistance->getUpdatedAt());
+    $distanceObj->setDistance((float) $doctrineDistance->getDistance());
+    $distanceObj->getOrigin()->setLatitude((float) $doctrineDistance->getOriginLatitude());
+    $distanceObj->getOrigin()->setLongitude((float) $doctrineDistance->getOriginLongitude());
+    $distanceObj->getDestination()->setLatitude((float) $doctrineDistance->getDestinationLatitude());
+    $distanceObj->getDestination()->setLongitude((float) $doctrineDistance->getDestinationLongitude());
+    return $distanceObj;
   }
 }
