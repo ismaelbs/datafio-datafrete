@@ -10,6 +10,7 @@ use Isma\Datafrete\Modules\DistanceCalculator\Gateway\CepCacheInterface;
 use Isma\Datafrete\Modules\DistanceCalculator\Gateway\CepFinderInterface;
 use Isma\Datafrete\Modules\DistanceCalculator\Gateway\DistanceRepositoryInterface;
 use Psr\Container\ContainerInterface;
+use Slim\Views\Twig;
 use Symfony\Component\Cache\Adapter\RedisAdapter;
 use function DI\create;
 
@@ -21,12 +22,20 @@ return [
   EntityManagerInterface::class => fn(ContainerInterface $container) => PostgresEntityManager::get($container),
   DistanceRepositoryInterface::class => fn(EntityManagerInterface $entityManagerInterface) => $entityManagerInterface->getRepository(Distance::class),
   RedisAdapter::class => function (Config $config) {
-    $host = $config->get('redis.host');
-    $port = $config->get('redis.port');
-    $password = $config->get('redis.password');
+    $host = $config->get('cache.host');
+    $port = $config->get('cache.port');
+    $user = $config->get('cache.username');
+    $password = $config->get('cache.password');
+    $dsn = "redis://{$user}:{$password}@{$host}:{$port}";
     return new RedisAdapter(
-      RedisAdapter::createConnection("redis://:root@redis:6379"),
+      RedisAdapter::createConnection($dsn),
     );
   },
-  CepCacheInterface::class => fn(RedisAdapter $cache) => new CepDistance($cache)
+  CepCacheInterface::class => fn(RedisAdapter $cache) => new CepDistance($cache),
+  Twig::class => function() {
+    $twig = Twig::create(TEMPLATES_PATH, [
+      'cache' => false
+    ]);
+    return $twig;
+  }
 ];

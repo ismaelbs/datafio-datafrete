@@ -7,6 +7,7 @@ use Slim\App;
 class DistanceRoutes {
   public static function register(App $app) {
     $app->post('/', [DistanceController::class, 'post']);
+    $app->get('/list', [DistanceController::class, 'list']);
     $app->get('/', [DistanceController::class, 'index']);
   }
 }

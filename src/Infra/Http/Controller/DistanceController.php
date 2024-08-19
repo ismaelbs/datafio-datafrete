@@ -8,12 +8,14 @@ use Isma\Datafrete\Modules\DistanceCalculator\Usecase\ListCalculateDistance\List
 use Isma\Datafrete\Modules\DistanceCalculator\Usecase\ListCalculateDistance\ListCalculateDistanceInput;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
+use Slim\Views\Twig;
 
 class DistanceController
 {
   public function __construct(
-    private CalculateDistance $calculateDistance,
-    private ListCalculateDistance $listCalculateDistance
+    private readonly CalculateDistance $calculateDistance,
+    private readonly ListCalculateDistance $listCalculateDistance,
+    private readonly Twig $twig
   )
   {
   }
@@ -55,7 +57,7 @@ class DistanceController
     
   }
 
-  public function index(Request $request, Response $response): Response
+  public function list(Request $request, Response $response): Response
   {
     $response = $response->withHeader('Content-Type', 'application/json');
     $body = (array) $request->getParsedBody();
@@ -70,5 +72,9 @@ class DistanceController
     $distances = $this->listCalculateDistance->execute(ListCalculateDistanceInput::make($limit, $offset));
     $response->getBody()->write(json_encode($distances, JSON_PRETTY_PRINT));
     return $response->withStatus(200);
+  }
+
+  public function index(Request $request, Response $response): Response {
+    return $this->twig->render($response, 'index/index.twig');
   }
 }

@@ -8,6 +8,7 @@ return [
     "displayErrorDetails" => (bool) $_ENV["APP_DISPLAY_ERROR_DATAILS"],
     "logErrors" => (bool) $_ENV["APP_LOG_ERRORS"],
     "logErrorDetails" => (bool) $_ENV["APP_LOG_ERROR_DETAILS"],
+    "env" => $_ENV["APP_ENV"],
   ],
   "database" => [
     "driver" => $_ENV["DB_DRIVER"],
@@ -20,7 +21,9 @@ return [
   "cache" => [
     "host" => $_ENV["CACHE_HOST"],
     "port" => (int) $_ENV["CACHE_PORT"],
+    "username" => $_ENV["CACHE_USER"],
     "password" => $_ENV["CACHE_PASS"],
+
   ],
   "apis" => [
     "brasilapi" => [
