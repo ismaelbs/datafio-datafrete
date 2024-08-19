@@ -15,7 +15,7 @@ return [
   Config::class => create(Config::class)->constructor(
     require CONFIGS_PATH
   ),
-  CepFinderInterface::class => fn(ContainerInterface $container) => new BrasilApi($container),
+  CepFinderInterface::class => fn(Config $config) => new BrasilApi($config),
   EntityManagerInterface::class => fn(ContainerInterface $container) => PostgresEntityManager::get($container),
   DistanceRepositoryInterface::class => fn(EntityManagerInterface $entityManagerInterface) => $entityManagerInterface->getRepository(Distance::class),
   RedisAdapter::class => function (Config $config) {

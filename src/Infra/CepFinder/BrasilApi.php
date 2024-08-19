@@ -12,8 +12,7 @@ use Psr\Container\ContainerInterface;
 class BrasilApi implements CepFinderInterface
 {
   private string $url;
-  public function __construct(ContainerInterface $container) {
-    $config = $container->get(Config::class);
+  public function __construct(Config $config) {
     $this->url = $config->get('apis.brasilapi.url');
   }
   public function find(string $cep): Cep
