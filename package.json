@@ -10,7 +10,10 @@
     "@symfony/webpack-encore": "^4.6.1",
     "bootstrap": "^5.3.3",
     "bootstrap-icons": "^1.11.3",
-    "sass": "^1.77.8",
+    "core-js": "^3.38.0",
+    "datatables.net-dt": "^2.1.4",
+    "datatables.net-plugins": "^2.0.8",
+    "sass": "1.53.0",
     "sass-loader": "^14.2.1",
     "webpack-notifier": "^1.15.0"
   }

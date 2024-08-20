@@ -13,10 +13,6 @@
   {% block styles %}
   {{ encore_entry_link_tags('app') }}
   {% endblock %}
-
-  {% block scripts %}
-  {{ encore_entry_script_tags('app') }}
-  {% endblock %}
 </head>
 
 <body>
@@ -30,7 +26,12 @@
       </ul>
       {% include('/index/form.twig') %}
     </div>
+    {% block table %}
+    {% include('/index/table.twig') %}
+    {% endblock %}
   </section>
+  {% block scripts %}
+  {{ encore_entry_script_tags('app') }}
+  {% endblock %}
 </body>
-
 </html>

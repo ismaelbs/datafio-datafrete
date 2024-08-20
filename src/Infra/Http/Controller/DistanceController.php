@@ -60,17 +60,25 @@ class DistanceController
   public function list(Request $request, Response $response): Response
   {
     $response = $response->withHeader('Content-Type', 'application/json');
-    $body = (array) $request->getParsedBody();
+    $params = (array) $request->getQueryParams();
     $limit = 10;
     $offset = 0;
-    if (isset($body["limit"]) && $body["limit"] > 0) {
-      $limit = $body["limit"];
+    $total = 0;
+    $draw = 1;
+    if (isset($params["limit"]) && $params["limit"] > 0) {
+      $limit = $params["limit"];
     }
-    if (isset($body["offset"]) && $body["offset"] > 0) {
-      $offset = $body["offset"];
+    if (isset($params["offset"]) && $params["offset"] > 0) {
+      $offset = $params["offset"];
     }
     $distances = $this->listCalculateDistance->execute(ListCalculateDistanceInput::make($limit, $offset));
-    $response->getBody()->write(json_encode($distances, JSON_PRETTY_PRINT));
+    $total = count($distances);
+    $response->getBody()->write(json_encode([
+      "data" => $distances,
+      'draw'            => $draw,
+      'recordsTotal'    => $total,
+      'recordsFiltered' => $total,
+    ], JSON_PRETTY_PRINT));
     return $response->withStatus(200);
   }
 
