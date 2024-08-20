@@ -54,7 +54,6 @@ class DistanceController
     } 
     $response->getBody()->write(json_encode($distanceOutput, JSON_PRETTY_PRINT));
     return $response->withStatus(200);
-    
   }
 
   public function list(Request $request, Response $response): Response
@@ -64,12 +63,15 @@ class DistanceController
     $limit = 10;
     $offset = 0;
     $total = 0;
-    $draw = 1;
+    $draw = 0;
     if (isset($params["limit"]) && $params["limit"] > 0) {
       $limit = $params["limit"];
     }
     if (isset($params["offset"]) && $params["offset"] > 0) {
       $offset = $params["offset"];
+    }
+    if (isset($params["draw"]) && $params["draw"] > 0) {
+      $draw = $params["draw"];
     }
     $distances = $this->listCalculateDistance->execute(ListCalculateDistanceInput::make($limit, $offset));
     $total = $distances["count"];
