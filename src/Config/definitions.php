@@ -23,11 +23,16 @@ return [
     "port" => (int) $_ENV["CACHE_PORT"],
     "username" => $_ENV["CACHE_USER"],
     "password" => $_ENV["CACHE_PASS"],
-
   ],
   "apis" => [
     "brasilapi" => [
       "url" => $_ENV["BRASILAPI_URL"],
     ],
   ],
+  "rabbitmq" => [
+    "host" => $_ENV["RABBITMQ_HOST"],
+    "port" => $_ENV["RABBITMQ_PORT"],
+    "user" => $_ENV["RABBITMQ_USER"],
+    "password" => $_ENV["RABBITMQ_PASS"],
+  ]
 ];
