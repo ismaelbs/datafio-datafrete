@@ -22,13 +22,12 @@ document.addEventListener('DOMContentLoaded', () => {
     })
       .then((response) => {
         if (!response.ok) {
-          return response.json();
-        } else {
           alert("Erro ao realizar operação. Tente novamente");
           return {};
         }
+        return response.json();
       })
-      .then((result) => {
+      .finally(() => {
         formCalculate.reset();
         reset();
         calculate.disabled = false;
@@ -41,6 +40,8 @@ document.addEventListener('DOMContentLoaded', () => {
       language: languagePTBR,
       serverSide: true,
       searching: false,
+      orderMulti: false,
+      ordering: false,
       ajax: '/list',
       columns: [
         {
