@@ -72,7 +72,8 @@ class DistanceController
       $offset = $params["offset"];
     }
     $distances = $this->listCalculateDistance->execute(ListCalculateDistanceInput::make($limit, $offset));
-    $total = count($distances);
+    $total = $distances["count"];
+    $distances = $distances["distances"];
     $response->getBody()->write(json_encode([
       "data" => $distances,
       'draw'            => $draw,

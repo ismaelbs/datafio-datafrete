@@ -8,13 +8,20 @@ readonly class ListCalculateDistanceOutput{
 
   public static function make(array $distances): array
   {
-    return array_map(function (Distance $distance) {
+    $count = $distances['count'];
+    $distancesData = $distances['result'];
+    $distances = array_map(function (Distance $distance) {
       return [
         'origin' => $distance->getOrigin()->toString(),
         'destination' => $distance->getDestination()->toString(),
         'distance' => $distance->getDistance(),
         'type' => 'Kilometers'
       ];
-    }, $distances);
+    }, $distancesData);
+
+    return [
+      'count' => $count,
+      'distances' => $distances
+    ];
   }
 }

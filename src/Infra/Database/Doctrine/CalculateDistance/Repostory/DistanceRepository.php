@@ -2,6 +2,7 @@
 declare(strict_types=1);
 namespace Isma\Datafrete\Infra\Database\Doctrine\CalculateDistance\Repostory;
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 use Isma\Datafrete\Modules\DistanceCalculator\Domain\Entity\Distance;
 use Isma\Datafrete\Modules\DistanceCalculator\Domain\ValueObject\Cep;
 use Isma\Datafrete\Modules\DistanceCalculator\Domain\ValueObject\DistanceId;
@@ -45,15 +46,20 @@ class DistanceRepository extends EntityRepository implements DistanceRepositoryI
     $limit = $config['limit'] ?? 10;
     $offset = $config['offset'] ?? 0;
     $query = $this->createQueryBuilder('d')
-      ->orderBy('d.createdAt', 'ASC')
+      ->orderBy('d.createdAt', 'DESC')
       ->setMaxResults($limit)
       ->setFirstResult($offset)
       ->getQuery();
-    /** @var DoctrineDistance[] $distances */
-    $distances = $query->getResult();
-    return array_map(function (DoctrineDistance $distance) {
+    $paginator = new Paginator($query);
+    $count = $paginator->count();
+    $result = array_map(function (DoctrineDistance $distance) {
       return $this->mapping($distance);
-    }, $distances);
+    }, $paginator->getIterator()->getArrayCopy());
+
+    return [
+      'count' => $count,
+      'result' => $result
+    ];
   }
 
   private function mapping(DoctrineDistance $doctrineDistance): Distance {
