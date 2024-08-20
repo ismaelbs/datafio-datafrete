@@ -43,7 +43,7 @@ return [
   Twig::class => function (ContainerInterface $container) {
     $config = $container->get(Config::class);
     $twig = Twig::create(TEMPLATES_PATH, [
-      'auto_reload' => $config->get('app.env'),
+      'auto_reload' => $config->get('app.env') === 'development',
       'cache' => TEMPLATES_CACHE_PATH,
     ]);
     $twig->addExtension(new EntryFilesTwigExtension($container));
