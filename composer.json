@@ -35,6 +35,7 @@
         "twig/twig": "^3.11",
         "slim/twig-view": "^3.4",
         "symfony/webpack-encore-bundle": "^1.15",
-        "symfony/twig-bridge": "^6.1"
+        "symfony/twig-bridge": "^6.1",
+        "php-amqplib/php-amqplib": "^3.7"
     }
 }
