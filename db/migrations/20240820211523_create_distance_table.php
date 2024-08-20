@@ -8,9 +8,9 @@ final class CreateDistanceTable extends AbstractMigration
 {
     public function up(): void
     {
-        $table = $this->table('datafrete.distance',['id' => false, 'primary_key' => ['id']]);
+        $table = $this->table('datafrete.distance',['id' => false, 'primary_key' => 'id']);
         $table
-            ->addColumn('id', 'string', ['limit' => 36])
+            ->addColumn('id', 'uuid')
             ->addColumn('origin', 'string', ['limit' => 8])
             ->addColumn('destination', 'string', ['limit' => 8])
             ->addColumn('distance', 'decimal', ['precision' => 10, 'scale' => 2])
