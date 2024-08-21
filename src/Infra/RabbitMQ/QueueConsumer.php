@@ -52,8 +52,6 @@ class QueueConsumer
     $manager = $this->container->get(RabbitMQManager::class);
     $channel = $manager->createChannel();
     $channel->queue_declare($this->queueName, false, false, false, false);
-    // $channel->exchange_declare($this->exchangeName, $this->exchangeType, false, false, false);
-    // $channel->queue_bind($this->queueName, $this->exchangeName, $this->routingKey);
     $channel->basic_consume($this->queueName, '', false, false, false, false, function (AMQPMessage $msg) {
       $this->consumer->consume($msg);
     });

@@ -17,7 +17,7 @@ class ImportCepsFromFile {
   {
     $rows = $this->readFile($input->filePath);
     $channel =$this->rabbitMQManager->createChannel();
-    $channel->queue_declare('ceps queue');
+    $channel->queue_declare('ceps queue', false, false, false, false);
     foreach ($rows as $row) {
       [$origin, $destination] = $row;
       $channel->basic_publish(new AMQPMessage(json_encode([$origin, $destination])), '', 'ceps queue');
