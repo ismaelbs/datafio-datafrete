@@ -6,6 +6,8 @@ use Isma\Datafrete\Infra\Cache\CalculateDistance\CepDistance;
 use Isma\Datafrete\Infra\CepFinder\BrasilApi;
 use Isma\Datafrete\Infra\Database\Doctrine\CalculateDistance\Entities\Distance;
 use Isma\Datafrete\Infra\Database\Doctrine\PostgresEntityManager;
+use Isma\Datafrete\Infra\RabbitMQ\Consumers\CepImporterConsumer;
+use Isma\Datafrete\Infra\RabbitMQ\RabbitMQManager;
 use Isma\Datafrete\Modules\DistanceCalculator\Gateway\CepCacheInterface;
 use Isma\Datafrete\Modules\DistanceCalculator\Gateway\CepFinderInterface;
 use Isma\Datafrete\Modules\DistanceCalculator\Gateway\DistanceRepositoryInterface;
@@ -17,7 +19,6 @@ use Symfony\Component\Asset\Packages;
 use Symfony\Component\Asset\VersionStrategy\JsonManifestVersionStrategy;
 use Symfony\Component\Cache\Adapter\RedisAdapter;
 use Symfony\WebpackEncoreBundle\Asset\EntrypointLookup;
-use Symfony\WebpackEncoreBundle\Asset\EntrypointLookupCollection;
 use Symfony\WebpackEncoreBundle\Asset\TagRenderer;
 use Symfony\WebpackEncoreBundle\Twig\EntryFilesTwigExtension;
 use function DI\create;
@@ -57,4 +58,6 @@ return [
     new EntrypointLookup(BUILD_PATH . '/entrypoints.json'),
     $container->get('webpack_encore.packages')
   ),
+  RabbitMQManager::class => fn(Config $config) => new RabbitMQManager($config),
+  CepImporterConsumer::class => fn(ContainerInterface $container) => new CepImporterConsumer($container),
 ];
