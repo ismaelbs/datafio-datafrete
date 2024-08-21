@@ -45,3 +45,10 @@ docker exec -it app php vendor/bin/phinx migrate
 docker exec -it app npm run build
 ```
 ## Uso
+
+### Workers
+Para fazer uso da funcionalidade de importar csv é preciso iniciar os workers. Para fazer isso, usamos:
+```
+docker exec -it app php workers/worker.php
+```
+Podemos rodar esse comando mais de uma vez, para iniciar outros workers.
