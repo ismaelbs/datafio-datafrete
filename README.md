@@ -1,6 +1,5 @@
 # Calculadora de distância entre CEPs
-<p align="center">Implementação do projeto proposto como desafio técnico por </p>
-[DATAFRETE](https://www.datafrete.com/)
+<p align="center">Implementação do projeto proposto como desafio técnico por DATAFRETE</p>
 
 ---
 
@@ -24,7 +23,7 @@ git clone
 
 3. Instalação dos containers
 
-    Obs.: O docker-compose está preparado para subir o ambiente de desenvolvimento
+    *Obs.:* O docker-compose está preparado para subir o ambiente de desenvolvimento.
         Você pode popular o .env com os dados contidos nele :)
 ```
 docker compose -f .docker/docker-compose.yaml up -d --build
