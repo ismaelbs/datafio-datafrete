@@ -7,8 +7,7 @@ document.addEventListener("DOMContentLoaded", () => {
   let table = initTable();
 
   setTimeout(() => {
-    table.destroy();
-    table = initTable();
+    table.draw();
   }, 1000 * 60);
   /**
    * @type {HTMLFormElement} form
@@ -34,7 +33,7 @@ document.addEventListener("DOMContentLoaded", () => {
       })
       .finally(() => {
         formCalculate.reset();
-        reset();
+        table.draw();
         calculate.disabled = false;
         calculate.innerHTML = beforeSendText;
       });
@@ -68,11 +67,6 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  function reset() {
-    table.destroy();
-    table = initTable();
-  }
-
   /**
    * @type {HTMLFormElement}
    */
@@ -94,8 +88,10 @@ document.addEventListener("DOMContentLoaded", () => {
         }
       })
       .then(() => {
-        alert("Importado com sucesso!, Aguarde até todos os dados serem carregados");
-        reset();
+        alert(
+          "Importado com sucesso!, Aguarde até todos os dados serem carregados"
+        );
+        table.draw();
       });
   });
 });
