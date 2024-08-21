@@ -17,7 +17,7 @@ Para instalar o projeto, siga os seguintes passos:
 
 1. Clone o repositório:
 ```
-git clone 
+git clone https://github.com/ismaelbs/datafio-datafrete.git
 ```
 2. Entrar na pasta do projeto
 
