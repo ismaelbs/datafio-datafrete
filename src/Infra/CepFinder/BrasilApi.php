@@ -17,7 +17,11 @@ class BrasilApi implements CepFinderInterface
   public function find(string $cep): Cep
   {
     $client = new Client(['base_uri' => $this->url]);
-    $response = $client->get("/api/cep/v2/{$cep}");
+    try {
+      $response = $client->get("/api/cep/v2/{$cep}");
+    } catch (\Exception $e) {
+      throw CepException::notFound($cep);
+    }
     if ($response->getStatusCode() !== 200) {
       throw CepException::notFound($cep);
     }
