@@ -28,21 +28,19 @@ git clone
 ```
 docker compose -f .docker/docker-compose.yaml up -d --build
 ```
-4. Instalar dependências do projeto no container
-
-5. Instalar dependências backend
+4. Instalar dependências backend
 ```
 docker exec -it app composer install
 ```
-6.Instalar dependências frontend
+5.Instalar dependências frontend
 ```
 docker exec -it app npm i
 ```
-7.Rodar as migrations
+6.Rodar as migrations
 ```
 docker exec -it app php vendor/bin/phinx migrate
 ```
-8.Fazer o build do frontend
+7.Fazer o build do frontend
 ```
 docker exec -it app npm run build
 ```
