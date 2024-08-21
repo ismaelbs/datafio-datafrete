@@ -17,10 +17,12 @@ class ImportCepsFromFile {
   {
     $rows = $this->readFile($input->filePath);
     $channel =$this->rabbitMQManager->createChannel();
+    $channel->exchange_declare('ceps exchange', 'topic', false, false, false);
     $channel->queue_declare('ceps queue', false, false, false, false);
+    $channel->queue_bind('ceps queue', 'ceps exchange', 'ceps queue');
     foreach ($rows as $row) {
       [$origin, $destination] = $row;
-      $channel->basic_publish(new AMQPMessage(json_encode([$origin, $destination])), '', 'ceps queue');
+      $channel->basic_publish(new AMQPMessage(json_encode([$origin, $destination])), 'ceps exchange', 'ceps queue');
     }
     $channel->close();
     $this->rabbitMQManager->closeConnection();

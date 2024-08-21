@@ -15,6 +15,9 @@ $container = (new Container(require CONTAINER_BINDINGS))->getContainer();
 $queueConsumer = $container->get(QueueConsumer::class);
 $queueConsumer
   ->setQueueName('ceps queue')
+  ->setExchangeName('ceps exchange')
+  ->setRoutingKey('ceps queue')
+  ->setExchangeType('topic')
   ->setConsumer($container->get(CepImporterConsumer::class))
   ->run();
 
