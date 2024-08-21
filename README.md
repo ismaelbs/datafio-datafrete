@@ -23,8 +23,8 @@ git clone
 
 3. Instalação dos containers
 
-    *Obs.:* O docker-compose está preparado para subir o ambiente de desenvolvimento.
-        Você pode popular o .env com os dados contidos nele :)
+*Obs.:* O docker-compose está preparado para subir o ambiente de desenvolvimento.
+    Você pode popular o .env com os dados contidos nele :)
 ```
 docker compose -f .docker/docker-compose.yaml up -d --build
 ```
