@@ -3,6 +3,7 @@ namespace Isma\Datafrete\Infra\Http\Controller;
 use Isma\Datafrete\Infra\Http\Validators\CalculateDistanceInputValidator;
 use Isma\Datafrete\Modules\DistanceCalculator\Exception\CepCoordenatesNotFoundException;
 use Isma\Datafrete\Modules\DistanceCalculator\Exception\CepIsInvalidExeception;
+use Isma\Datafrete\Modules\DistanceCalculator\Exception\CepNotFoundException;
 use Isma\Datafrete\Modules\DistanceCalculator\Usecase\CalculateDistance\CalculateDistance;
 use Isma\Datafrete\Modules\DistanceCalculator\Usecase\CalculateDistance\CalculateDistanceInput;
 use Isma\Datafrete\Modules\DistanceCalculator\Usecase\ListCalculateDistance\ListCalculateDistance;
@@ -43,7 +44,12 @@ class DistanceController
         "error" => $e->getMessage()
       ]));
       return $response->withStatus(400);
-    } catch (\Exception $e) {
+    } catch (CepNotFoundException $e) {
+      $response->getBody()->write(json_encode([
+        "error" => $e->getMessage()
+      ], JSON_PRETTY_PRINT));
+      return $response->withStatus(404);
+    }  catch (\Exception $e) {
       $response->getBody()->write(json_encode([
         "error" => "An error has occurred"
       ], JSON_PRETTY_PRINT));
