@@ -1,5 +1,6 @@
 <?php
 namespace Isma\Datafrete\Infra\Http\Controller;
+use Isma\Datafrete\Infra\Http\Validators\CalculateDistanceInputValidator;
 use Isma\Datafrete\Modules\DistanceCalculator\Exception\CepCoordenatesNotFoundException;
 use Isma\Datafrete\Modules\DistanceCalculator\Exception\CepIsInvalidExeception;
 use Isma\Datafrete\Modules\DistanceCalculator\Usecase\CalculateDistance\CalculateDistance;
@@ -22,16 +23,12 @@ class DistanceController
   public function post(Request $request, Response $response): Response {
     $response = $response->withHeader('Content-Type', 'application/json');
     $body = (array) $request->getParsedBody();
-    if (!isset($body["ceps"])) {
+    
+    try {
+      $body = CalculateDistanceInputValidator::validate($body);
+    } catch (\Exception $e) {
       $response->getBody()->write(json_encode([
-        "error" => "Ceps are required"
-      ]));
-      return $response->withStatus(400);
-    }
-
-    if (!isset($body["ceps"]["origin"]) || !isset($body["ceps"]["destination"])) {
-      $response->getBody()->write(json_encode([
-        "error" => "Ceps are required"
+        "error" => $e->getMessage()
       ]));
       return $response->withStatus(400);
     }
@@ -64,11 +61,11 @@ class DistanceController
     $offset = 0;
     $total = 0;
     $draw = 0;
-    if (isset($params["limit"]) && $params["limit"] > 0) {
-      $limit = $params["limit"];
+    if (isset($params["length"]) && $params["length"] > 0) {
+      $limit = $params["length"];
     }
-    if (isset($params["offset"]) && $params["offset"] > 0) {
-      $offset = $params["offset"];
+    if (isset($params["start"]) && $params["start"] > 0) {
+      $offset = $params["start"];
     }
     if (isset($params["draw"]) && $params["draw"] > 0) {
       $draw = $params["draw"];
